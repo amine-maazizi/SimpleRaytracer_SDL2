@@ -7,12 +7,21 @@
 #include <unistd.h>
 #include <SDL.h>
 
-struct Vec2 {
-    int x;
-    int y;
+struct Vec3 {
+    double x;
+    double y;
+    double z;
+};
+
+struct Color {
+    int r;
+    int g;
+    int b;
 };
 
 void ensureFolderExists(const char*);
 void saveImage(SDL_Window*, SDL_Renderer*, const char*);
+double dotProduct(struct Vec3, struct Vec3);
+struct Vec3 subtractVec3(struct Vec3, struct Vec3);
 
 #endif

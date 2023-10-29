@@ -2,10 +2,10 @@
 #include <SDL.h>
 
 #include "../header/canvas.h"
-#include "../header/utils.h"
+#include "../header/scene.h"
 
-#define WIDTH  800
-#define HEIGHT  600
+#define WIDTH  500
+#define HEIGHT  500
 
 int main(int argc, char* argv[]) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -37,13 +37,23 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    for (int y = 0; y < canvas->height; y++) {
-        for (int x = 0; x < canvas->width; x++) {
-            setPixel(canvas, renderer, x, y, 255, 0, 0);
-        }
+    struct Viewport* viewport = createViewport(1, 1, 1);
+    if (viewport == NULL) {
+        fprintf(stderr, "createViewport Error: %s\n", SDL_GetError());
+        freeCanvas(canvas);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
     }
 
-    SDL_RenderClear(renderer);
+    struct Sphere* s1 = createSphere((struct Vec3){.x = 0, .y = -1, .z = 3}, 1, (struct Color){.r = 255, .g = 0, .b = 0});
+    struct Sphere* s2 = createSphere((struct Vec3){.x = 2, .y = 0, .z = 4}, 1, (struct Color){.r = 0, .g = 255, .b = 0});
+    struct Sphere* s3 = createSphere((struct Vec3){.x = -2, .y = 0, .z = 4}, 1, (struct Color){.r = 0, .g = 0, .b = 255});
+    struct Sphere s[3] = {*s1, *s2, *s3};
+
+    renderScene(renderer, canvas, viewport, s, 3);
+
     SDL_RenderPresent(renderer);
 
     // Save the image to disk
@@ -52,6 +62,10 @@ int main(int argc, char* argv[]) {
 
     // Cleanup and exit
     freeCanvas(canvas);
+    freeViewport(viewport);
+    for (int i = 0; i < 3; i++) {
+        freeSphere(&s[i]);
+    }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

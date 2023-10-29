@@ -1,0 +1,8 @@
+//
+// Created by Administrateur on 29/10/2023.
+//
+
+#ifndef SIMPLERAYTRACER_SDL2_LIGHT_H
+#define SIMPLERAYTRACER_SDL2_LIGHT_H
+
+#endif //SIMPLERAYTRACER_SDL2_LIGHT_H

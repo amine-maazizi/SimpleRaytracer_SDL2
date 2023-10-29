@@ -22,3 +22,13 @@ void saveImage(SDL_Window* window, SDL_Renderer* renderer, const char* filename)
     SDL_SaveBMP(surface, filename);
     SDL_FreeSurface(surface);
 }
+
+double dotProduct(struct Vec3 v1, struct Vec3 v2)
+{
+    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+struct Vec3 subtractVec3(struct Vec3 v1, struct Vec3 v2)
+{
+    return (struct Vec3) {v1.x - v2.x, v1.y - v2.y, v1.z - v2.z};
+}

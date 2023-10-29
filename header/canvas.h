@@ -20,7 +20,10 @@ struct Viewport {
 struct Canvas* createCanvas(int, int);
 void freeCanvas(struct Canvas*);
 void setPixel(struct Canvas*, SDL_Renderer*, int, int, int, int, int);
-struct Vec2 canvas2viewport(struct Canvas*, struct Viewport*, int, int);
+
+struct Viewport* createViewport(int, int, int);
+void freeViewport(struct Viewport*);
+struct Vec3 canvas2viewport(struct Canvas*, struct Viewport*, int, int);
 
 
 #endif
