@@ -23,5 +23,8 @@ void ensureFolderExists(const char*);
 void saveImage(SDL_Window*, SDL_Renderer*, const char*);
 double dotProduct(struct Vec3, struct Vec3);
 struct Vec3 subtractVec3(struct Vec3, struct Vec3);
+struct Vec3 addVec3(struct Vec3, struct Vec3);
+struct Vec3 multiplyVec3(struct Vec3, double);
+struct Color multiplyColor(struct Color, double);
 
 #endif

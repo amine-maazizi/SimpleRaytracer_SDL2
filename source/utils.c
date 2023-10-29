@@ -32,3 +32,16 @@ struct Vec3 subtractVec3(struct Vec3 v1, struct Vec3 v2)
 {
     return (struct Vec3) {v1.x - v2.x, v1.y - v2.y, v1.z - v2.z};
 }
+
+struct Vec3 addVec3(struct Vec3 v1, struct Vec3 v2) {
+    return (struct Vec3) {v1.x + v2.x, v1.y + v2.y, v1.z + v2.z};
+}
+
+struct Vec3 multiplyVec3(struct Vec3 v1, double k) {
+    return (struct Vec3) {v1.x * k, v1.y * k, v1.z * k};
+}
+
+struct Color multiplyColor(struct Color c, double k)
+{
+    return  (struct Color) {c.r * k, c.g * k, c.b * k};
+}

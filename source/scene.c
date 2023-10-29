@@ -45,7 +45,7 @@ double intersectRaySphere(struct Vec3 O, struct Vec3 D, struct Sphere* sphere) {
     }
 }
 
-struct Color traceRay(struct Vec3 O, struct Vec3 D, int t_min, int t_max, struct Sphere* spheres, int sphereCount)
+struct Color traceRay(struct Vec3 O, struct Vec3 D, int t_min, int t_max, struct Sphere* spheres, int sphereCount, struct LightArray* LA)
 {
     double closest_t = t_max;
     struct Sphere* closest_sphere = NULL;
@@ -60,13 +60,16 @@ struct Color traceRay(struct Vec3 O, struct Vec3 D, int t_min, int t_max, struct
     }
 
     if (closest_sphere != NULL) {
-        return closest_sphere->color;
+        struct Vec3 P = addVec3(O, multiplyVec3(D, closest_t));
+        struct Vec3 N = subtractVec3(P, closest_sphere->center);
+        N = multiplyVec3(N, 1.0 / sqrt(dotProduct(N, N)));
+        return multiplyColor(closest_sphere->color, computeLighting(P, N, LA));
     } else {
         return (struct Color) {0, 0, 0};
     }
 }
 
-void renderScene(SDL_Renderer* renderer, struct Canvas* canvas, struct Viewport* viewport, struct Sphere* spheres, int sphereCount) {
+void renderScene(SDL_Renderer* renderer, struct Canvas* canvas, struct Viewport* viewport, struct Sphere* spheres, int sphereCount, struct LightArray* LA) {
     int width = canvas->width;
     int height = canvas->height;
     struct Vec3 camera = {0, 0, 0};
@@ -75,8 +78,37 @@ void renderScene(SDL_Renderer* renderer, struct Canvas* canvas, struct Viewport*
         for (int y = -height / 2; y < height / 2; y++) {
             struct Vec3 P = canvas2viewport(canvas, viewport, x, y);
             struct Vec3 rayDirection = subtractVec3(P, camera);
-            struct Color color = traceRay(camera, rayDirection, 1, INFINITY, spheres, sphereCount);
+            struct Color color = traceRay(camera, rayDirection, 1, INFINITY, spheres, sphereCount, LA);
             setPixel(canvas, renderer, x, y, color.r, color.g, color.b);
         }
     }
+}
+
+double computeLighting(struct Vec3 P, struct Vec3 N, struct LightArray* LA) {
+    double i = 0;
+    int na = LA->ambientLightCount;
+    int np = LA->pointLightCount;
+    int nd = LA->directionalLightCount;
+
+    struct AmbientLight* AL = LA->ambientLights;
+    struct PointLight* PL = LA->pointLights;
+    struct DirectionalLight* DL = LA->directionalLights;
+
+    for (int j = 0; j < na; j++) {
+        struct AmbientLight* al = &AL[j];
+        i += al->intensity;
+    }
+
+    for (int j = 0; j < np; j++) {
+        struct PointLight* pl = &PL[j];
+        struct Vec3 L = subtractVec3(pl->position, P);
+        i += pl->intensity * dotProduct(L, N) / (dotProduct(L, L) * dotProduct(N, N));
+    }
+
+    for (int j = 0; j < nd; j++) {
+        struct DirectionalLight* dl = &DL[j];
+        i += dl->intensity * dotProduct(dl->direction, N) / (dotProduct(dl->direction, dl->direction) * dotProduct(N, N));
+    }
+
+    return i;
 }
