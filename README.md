@@ -1,6 +1,6 @@
 # Simple Raytracing Engine using C and SDL
 
-![Raytracing Example](output/scene.bmp)
+![Raytracing Example](source/output/scene.bmp)
 
 A simple raytracing engine built in C with the help of the Simple DirectMedia Layer (SDL). This project is designed to help you explore the fundamentals of raytracing and create stunning rendered images through code.
 
