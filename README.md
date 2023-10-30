@@ -6,15 +6,15 @@ A simple raytracing engine built in C with the help of the Simple DirectMedia La
 
 ## Features
 
-- [ ] Window setup
-- [ ] Canvas and viewport
-- [ ] Ray-Sphere intersection equation
-- [ ] Sphere rendering
-- [ ] Point light
-- [ ] Directional light
-- [ ] Ambien light
-- [ ] Diffuse reflection
-- [ ] Specular reflection
+- [x] Window setup
+- [x] Canvas and viewport
+- [x] Ray-Sphere intersection equation
+- [x] Sphere rendering
+- [x] Point light
+- [x] Directional light
+- [x] Ambient light
+- [x] Diffuse reflection
+- [x] Specular reflection
 - [ ] Shadows
 - [ ] Reflection
 - [ ] Refraction (planned)
