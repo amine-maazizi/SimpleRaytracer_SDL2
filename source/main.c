@@ -49,10 +49,10 @@ int main(int argc, char* argv[]) {
     }
 
     int sphereCount = 4;
-    struct Sphere* s1 = createSphere((struct Vec3){.x = 0, .y = -1, .z = 3}, 1, (struct Color){.r = 255, .g = 0, .b = 0}, 500);
-    struct Sphere* s2 = createSphere((struct Vec3){.x = 2, .y = 0, .z = 4}, 1, (struct Color){.r = 0, .g = 255, .b = 0}, 500);
-    struct Sphere* s3 = createSphere((struct Vec3){.x = -2, .y = 0, .z = 4}, 1, (struct Color){.r = 0, .g = 0, .b = 255}, 10);
-    struct Sphere* s4 = createSphere((struct Vec3){.x = 0, .y = -5001, .z = 0}, 5000, (struct Color){.r = 255, .g = 255, .b = 0}, 1000);
+    struct Sphere* s1 = createSphere((struct Vec3){.x = 0, .y = -1, .z = 3}, 1, (struct Color){.r = 255, .g = 0, .b = 0}, 500, 0.2);
+    struct Sphere* s2 = createSphere((struct Vec3){.x = 2, .y = 0, .z = 4}, 1, (struct Color){.r = 0, .g = 255, .b = 0}, 500, 0.3);
+    struct Sphere* s3 = createSphere((struct Vec3){.x = -2, .y = 0, .z = 4}, 1, (struct Color){.r = 0, .g = 0, .b = 255}, 10, 0.4);
+    struct Sphere* s4 = createSphere((struct Vec3){.x = 0, .y = -5001, .z = 0}, 5000, (struct Color){.r = 255, .g = 255, .b = 0}, 1000, 0.5);
     struct Sphere s[sphereCount];
     s[0] = *s1;
     s[1] = *s2;

@@ -12,14 +12,17 @@ struct Sphere {
     int radius;
     struct Color color;
     int specular; // -1 for non-specular, higher values for more specular.
+    double reflective; // 0 for non-reflective, 1 for fully reflective.
 };
 
-struct Sphere* createSphere(struct Vec3, int, struct Color, int);
+struct Sphere* createSphere(struct Vec3, int, struct Color, int, double);
 void freeSphere(struct Sphere*);
 
 double intersectRaySphere(struct Vec3, struct Vec3, struct Sphere*);
-struct Color traceRay(struct Vec3, struct Vec3, int, int,  struct Sphere*, int, struct LightArray*);
+struct Sphere* closestIntersection(struct Vec3, struct Vec3, double, double, double*, struct Sphere*, int);
+struct Color traceRay(struct Vec3, struct Vec3, double, double,  struct Sphere*, int, struct LightArray*, int);
 void renderScene(SDL_Renderer*, struct Canvas*, struct Viewport*, struct Sphere*, int, struct LightArray*);
-double computeLighting(struct Vec3, struct Vec3, struct Vec3, int, struct LightArray*);
+double computeLighting(struct Vec3, struct Vec3, struct Vec3, int, double, struct LightArray*, struct Sphere*, int);
+struct Vec3 reflectRay(struct Vec3, struct Vec3);
 
 #endif //SIMPLERAYTRACER_SDL2_SCENE_H

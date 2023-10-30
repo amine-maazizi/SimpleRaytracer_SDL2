@@ -15,10 +15,8 @@ A simple raytracing engine built in C with the help of the Simple DirectMedia La
 - [x] Ambient light
 - [x] Diffuse reflection
 - [x] Specular reflection
-- [ ] Shadows
-- [ ] Reflection
-- [ ] Refraction (planned)
-- [ ] Optimizations (planned)
+- [x] Shadows
+- [x] Reflection
 
 ## Getting Started
 

@@ -28,5 +28,6 @@ struct Vec3 subtractVec3(struct Vec3, struct Vec3);
 struct Vec3 addVec3(struct Vec3, struct Vec3);
 struct Vec3 multiplyVec3(struct Vec3, double);
 struct Color multiplyColor(struct Color, double);
+struct Color addColor(struct Color, struct Color);
 
 #endif

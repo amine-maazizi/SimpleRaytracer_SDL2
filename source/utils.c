@@ -52,3 +52,10 @@ struct Color multiplyColor(struct Color c, double k)
                             (c.g * k > 255) ? 255 : c.g * k,
                             (c.b * k > 255) ? 255 : c.b * k};
 }
+
+struct Color addColor(struct Color c1, struct Color c2)
+{
+    return (struct Color) {(c1.r + c2.r > 255) ? 255 : c1.r + c2.r,
+                           (c1.g + c2.g > 255) ? 255 : c1.g + c2.g,
+                           (c1.b + c2.b > 255) ? 255 : c1.b + c2.b};
+}
