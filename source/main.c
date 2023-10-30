@@ -48,19 +48,24 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    struct Sphere* s1 = createSphere((struct Vec3){.x = 0, .y = -1, .z = 3}, 1, (struct Color){.r = 255, .g = 0, .b = 0});
-    struct Sphere* s2 = createSphere((struct Vec3){.x = 2, .y = 0, .z = 4}, 1, (struct Color){.r = 0, .g = 255, .b = 0});
-    struct Sphere* s3 = createSphere((struct Vec3){.x = -2, .y = 0, .z = 4}, 1, (struct Color){.r = 0, .g = 0, .b = 255});
-    struct Sphere* s4 = createSphere((struct Vec3){.x = 0, .y = -5001, .z = 0}, 5000, (struct Color){.r = 255, .g = 255, .b = 0});
-    struct Sphere s[4] = {*s1, *s2, *s3, *s4};
+    int sphereCount = 4;
+    struct Sphere* s1 = createSphere((struct Vec3){.x = 0, .y = -1, .z = 3}, 1, (struct Color){.r = 255, .g = 0, .b = 0}, 500);
+    struct Sphere* s2 = createSphere((struct Vec3){.x = 2, .y = 0, .z = 4}, 1, (struct Color){.r = 0, .g = 255, .b = 0}, 500);
+    struct Sphere* s3 = createSphere((struct Vec3){.x = -2, .y = 0, .z = 4}, 1, (struct Color){.r = 0, .g = 0, .b = 255}, 10);
+    struct Sphere* s4 = createSphere((struct Vec3){.x = 0, .y = -5001, .z = 0}, 5000, (struct Color){.r = 255, .g = 255, .b = 0}, 1000);
+    struct Sphere s[sphereCount];
+    s[0] = *s1;
+    s[1] = *s2;
+    s[2] = *s3;
+    s[3] = *s4;
 
     struct AmbientLight* AL = createAmbientLight(0.2);
     struct PointLight* PL = createPointLight(0.6, (struct Vec3){.x = 2, .y = 1, .z = 0});
-    struct DirectionalLight* DL = createDirectionalLight(0.2, (struct Vec3){.x = 1, .y = 4, .z = 4});
+    struct DirectionalLight* DL = createDirectionalLight(0.2, (struct Vec3){.x = -1, .y = 4, .z = 4});
 
     struct LightArray* LA = createLightArray(AL, 1, PL, 1, DL, 1);
 
-    renderScene(renderer, canvas, viewport, s, 4, LA);
+    renderScene(renderer, canvas, viewport, s, sphereCount, LA);
 
     SDL_RenderPresent(renderer);
 
@@ -71,8 +76,13 @@ int main(int argc, char* argv[]) {
     // Cleanup and exit
     freeCanvas(canvas);
     freeViewport(viewport);
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < sphereCount; i++) {
         freeSphere(&s[i]);
+    }
+    for (int i = 0; i < 3; i++) {
+        freeAmbientLight(&AL[i]);
+        freePointLight(&PL[i]);
+        freeDirectionalLight(&DL[i]);
     }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

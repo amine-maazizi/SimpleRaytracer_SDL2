@@ -1,11 +1,12 @@
 #include "../header/scene.h"
 
 
-struct Sphere* createSphere(struct Vec3 center, int radius, struct Color color) {
+struct Sphere* createSphere(struct Vec3 center, int radius, struct Color color, int specular) {
     struct Sphere* sphere = malloc(sizeof(struct Sphere));
     sphere->center = center;
     sphere->radius = radius;
     sphere->color = color;
+    sphere->specular = specular;
 
     return sphere;
 }
@@ -62,8 +63,8 @@ struct Color traceRay(struct Vec3 O, struct Vec3 D, int t_min, int t_max, struct
     if (closest_sphere != NULL) {
         struct Vec3 P = addVec3(O, multiplyVec3(D, closest_t));
         struct Vec3 N = subtractVec3(P, closest_sphere->center);
-        N = multiplyVec3(N, 1.0 / sqrt(dotProduct(N, N)));
-        return multiplyColor(closest_sphere->color, computeLighting(P, N, LA));
+        N = multiplyVec3(N, 1.0 / magnitude(N));
+        return multiplyColor(closest_sphere->color, computeLighting(P, N, multiplyVec3(D, -1), closest_sphere->specular, LA));
     } else {
         return (struct Color) {0, 0, 0};
     }
@@ -84,7 +85,7 @@ void renderScene(SDL_Renderer* renderer, struct Canvas* canvas, struct Viewport*
     }
 }
 
-double computeLighting(struct Vec3 P, struct Vec3 N, struct LightArray* LA) {
+double computeLighting(struct Vec3 P, struct Vec3 N, struct Vec3 D, int sphereSpecular, struct LightArray* LA) {
     double i = 0;
     int na = LA->ambientLightCount;
     int np = LA->pointLightCount;
@@ -94,20 +95,52 @@ double computeLighting(struct Vec3 P, struct Vec3 N, struct LightArray* LA) {
     struct PointLight* PL = LA->pointLights;
     struct DirectionalLight* DL = LA->directionalLights;
 
+    // Ambient
     for (int j = 0; j < na; j++) {
         struct AmbientLight* al = &AL[j];
         i += al->intensity;
     }
 
+    // Point
     for (int j = 0; j < np; j++) {
         struct PointLight* pl = &PL[j];
         struct Vec3 L = subtractVec3(pl->position, P);
-        i += pl->intensity * dotProduct(L, N) / (dotProduct(L, L) * dotProduct(N, N));
+
+        // Diffuse
+        double LDotN = dotProduct(L, N);
+        if (LDotN > 0) {
+            i += pl->intensity * LDotN / (magnitude(L) * magnitude(N));
+        }
+
+        // Specular
+        if (sphereSpecular != -1) {
+            struct Vec3 R = subtractVec3(multiplyVec3(N, 2 * dotProduct(N, L)), L);
+            double RDotD = dotProduct(R, D);
+            if (RDotD > 0) {
+                i += pl->intensity * pow(RDotD / (magnitude(R) * magnitude(D)), sphereSpecular);
+            }
+        }
     }
 
+    // Directional
     for (int j = 0; j < nd; j++) {
         struct DirectionalLight* dl = &DL[j];
-        i += dl->intensity * dotProduct(dl->direction, N) / (dotProduct(dl->direction, dl->direction) * dotProduct(N, N));
+        struct Vec3 L = dl->direction;
+
+        // Diffuse
+        double LDotN = dotProduct(L, N);
+        if (LDotN > 0) {
+            i += dl->intensity * LDotN /
+                 (magnitude(L) * magnitude(N));
+        }
+
+        if (sphereSpecular != -1) {
+            struct Vec3 R = subtractVec3(multiplyVec3(N, 2 * dotProduct(N, L)), L);
+            double RDotD = dotProduct(R, D);
+            if (RDotD > 0) {
+                i += dl->intensity * pow(RDotD / (magnitude(R) * magnitude(D)), sphereSpecular);
+            }
+        }
     }
 
     return i;
