@@ -48,5 +48,7 @@ struct Vec3 multiplyVec3(struct Vec3 v1, double k) {
 
 struct Color multiplyColor(struct Color c, double k)
 {
-    return  (struct Color) {c.r * k, c.g * k, c.b * k};
+    return  (struct Color) {(c.r * k > 255) ? 255 : c.r * k,
+                            (c.g * k > 255) ? 255 : c.g * k,
+                            (c.b * k > 255) ? 255 : c.b * k};
 }
