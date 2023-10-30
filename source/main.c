@@ -5,8 +5,8 @@
 #include "../header/scene.h"
 
 
-#define WIDTH  500
-#define HEIGHT  500
+#define WIDTH  1080
+#define HEIGHT  1080
 
 int main(int argc, char* argv[]) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {

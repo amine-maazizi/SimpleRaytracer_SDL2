@@ -33,6 +33,27 @@ double magnitude(struct Vec3 v)
     return sqrt(dotProduct(v, v));
 }
 
+struct Vec3 rotateVec3(struct Vec3 vec, struct Vec3 axis, double theta) {
+    double x = vec.x;
+    double y = vec.y;
+    double z = vec.z;
+
+    double u = axis.x;
+    double v = axis.y;
+    double w = axis.z;
+
+    double cosTheta = cos(theta);
+    double sinTheta = sin(theta);
+
+    double dot = x * u + y * v + z * w;
+
+    double xPrime = u * dot * (1 - cosTheta) + x * cosTheta + (-w * y + v * z) * sinTheta;
+    double yPrime = v * dot * (1 - cosTheta) + y * cosTheta + (w * x - u * z) * sinTheta;
+    double zPrime = w * dot * (1 - cosTheta) + z * cosTheta + (-v * x + u * y) * sinTheta;
+
+    return (struct Vec3) {xPrime, yPrime, zPrime};
+}
+
 struct Vec3 subtractVec3(struct Vec3 v1, struct Vec3 v2)
 {
     return (struct Vec3) {v1.x - v2.x, v1.y - v2.y, v1.z - v2.z};

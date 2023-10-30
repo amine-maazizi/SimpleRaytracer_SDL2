@@ -91,11 +91,14 @@ struct Color traceRay(struct Vec3 O, struct Vec3 D, double t_min, double t_max, 
 void renderScene(SDL_Renderer* renderer, struct Canvas* canvas, struct Viewport* viewport, struct Sphere* spheres, int sphereCount, struct LightArray* LA) {
     int width = canvas->width;
     int height = canvas->height;
-    struct Vec3 camera = {0, 0, 0};
+    struct Vec3 camera = {0.0, 0.0, 0.0};
+    struct Vec3 rotationAxis = {0, 1, 0};
+    double theta = 0.0;
 
     for (int x = -width / 2; x < width / 2; x++) {
         for (int y = -height / 2; y < height / 2; y++) {
             struct Vec3 P = canvas2viewport(canvas, viewport, x, y);
+            P = rotateVec3(P, rotationAxis, theta);
             struct Vec3 rayDirection = subtractVec3(P, camera);
             struct Color color = traceRay(camera, rayDirection, 1, INFINITY, spheres, sphereCount, LA, 2);
             setPixel(canvas, renderer, x, y, color.r, color.g, color.b);
