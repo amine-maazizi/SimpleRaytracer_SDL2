@@ -86,28 +86,25 @@ These instructions will help you get a copy of the project up and running on you
 ### Prerequisites
 
 - C compiler (e.g., GCC)
-- SDL2 library
+- Git
+- SDL2 library (SDL_image is not required for this project)
 
 ### Installing
 
-1. Clone the repository:
+1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/amine-maazizi/SimpleRaytracer-SDL.git
+   git clone https://github.com/amine-maazizi/SimpleRaytracer_SDL2.git
    cd SimpleRaytracer-SDL
    ```
 
-2. Build the project:
-    
-   ```bash
-   make
-   ```
-
-3. Run the raytracer example:
-
-  ```bash
-   ./raytracer
-   ```
+2. **Configure Your Development Environment**:
+   
+   Ensure that you have an integrated development environment (IDE) or code editor installed and properly configured on your system. Make sure that the necessary dependencies are set up in your IDE for this        project.
+   
+4. **Run the Application:**
+   
+   Once you have loaded the project into your IDE and ensured that all dependencies are correctly configured, execute the `main.c` file to run the Raytracer.
 
 ## Contributing
 
